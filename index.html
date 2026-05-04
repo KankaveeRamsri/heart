@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at center, #1a0008, #000);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      color: white;
+    }
+
+    canvas {
+      position: absolute;
+    }
+
+    .text {
+      position: absolute;
+      bottom: 80px;
+      text-align: center;
+      animation: fadeIn 3s ease forwards;
+      opacity: 0;
+    }
+
+    .text h1 {
+      font-size: 2rem;
+      margin: 0;
+      color: #ff4d6d;
+    }
+
+    .text p {
+      font-size: 1rem;
+      color: #ffd6df;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="heart"></canvas>
+
+  <div class="text">
+    <h1>For You ❤️</h1>
+    <p>หัวใจดวงนี้ให้เธอนะ</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("heart");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2 - 40;
+    const scale = 14;
+
+    let points = [];
+    let t = 0;
+
+    function heartX(k) {
+      return 15 * Math.pow(Math.sin(k), 3);
+    }
+
+    function heartY(k) {
+      return 12 * Math.cos(k)
+        - 5 * Math.cos(2 * k)
+        - 2 * Math.cos(3 * k)
+        - Math.cos(4 * k);
+    }
+
+    function animate() {
+      if (t < Math.PI * 2) {
+        const x = cx + heartX(t) * scale;
+        const y = cy - heartY(t) * scale;
+
+        points.push({ x, y });
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#ff003c";
+        ctx.lineWidth = 3;
+        ctx.shadowColor = "#ff4d6d";
+        ctx.shadowBlur = 20;
+
+        for (let i = 0; i < points.length; i++) {
+          if (i === 0) ctx.moveTo(points[i].x, points[i].y);
+          else ctx.lineTo(points[i].x, points[i].y);
+        }
+
+        ctx.stroke();
+
+        t += 0.035;
+        requestAnimationFrame(animate);
+      }
+    }
+
+    animate();
+  </script>
+</body>
+</html>
