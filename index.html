@@ -2,13 +2,14 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>For You ❤️</title>
+
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: radial-gradient(circle at center, #1a0008, #000);
+      background: black;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -47,6 +48,7 @@
     }
   </style>
 </head>
+
 <body>
   <canvas id="heart"></canvas>
 
@@ -63,51 +65,44 @@
     canvas.height = window.innerHeight;
 
     const cx = canvas.width / 2;
-    const cy = canvas.height / 2 - 40;
-    const scale = 14;
+    const cy = canvas.height / 2;
 
-    let points = [];
-    let t = 0;
-
-    function heartX(k) {
+    function hearta(k) {
       return 15 * Math.pow(Math.sin(k), 3);
     }
 
-    function heartY(k) {
+    function heartb(k) {
       return 12 * Math.cos(k)
         - 5 * Math.cos(2 * k)
         - 2 * Math.cos(3 * k)
         - Math.cos(4 * k);
     }
 
-    function animate() {
-      if (t < Math.PI * 2) {
-        const x = cx + heartX(t) * scale;
-        const y = cy - heartY(t) * scale;
+    let i = 0;
 
-        points.push({ x, y });
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function draw() {
+      if (i < 6000) {
+        const x = cx + hearta(i) * 20;
+        const y = cy - heartb(i) * 20;
 
         ctx.beginPath();
-        ctx.strokeStyle = "#ff003c";
-        ctx.lineWidth = 3;
-        ctx.shadowColor = "#ff4d6d";
-        ctx.shadowBlur = 20;
 
-        for (let i = 0; i < points.length; i++) {
-          if (i === 0) ctx.moveTo(points[i].x, points[i].y);
-          else ctx.lineTo(points[i].x, points[i].y);
-        }
+        // จากจุดกลาง (0,0) → ไปหัวใจ (เหมือน turtle)
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 1.5;
 
         ctx.stroke();
 
-        t += 0.035;
-        requestAnimationFrame(animate);
+        i++;
+
+        requestAnimationFrame(draw);
       }
     }
 
-    animate();
+    draw();
   </script>
 </body>
 </html>
